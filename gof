@@ -1,0 +1,67 @@
+#!/bin/bash
+set -euo pipefail
+
+function usage {
+	>&2 echo "gof gof gof"
+}
+
+function init {
+	PKG=$1
+	mkdir -p "$(dirname ".gopath/src/$PKG")"
+	ln -snf "$(echo "${PKG//[^\/]}/" | sed s#/#../#g)"../ ".gopath/src/$PKG"
+	ln -snf "src/$PKG" ".gopath/self"
+	echo "/*" > .gopath/.gitignore
+}
+
+function sortie {
+	DEEPER=""
+	while :; do
+		[ -d "$PWD/.gopath" ] && break
+		DEEPER="${PWD##*/}/$DEEPER"
+		cd ..
+		[ "/" == "$PWD" ] && { >&2 printf "no .gopath found in parent paths\n"; exit 2; }
+	done
+}
+
+function readself {
+	[[ ! -d .gopath ]] && >&2 echo "gof: not initialized: no .gopath dir" && exit 4
+	[[ ! -h .gopath/self ]] && >&2 echo "gof: not initialized: no .gopath/self link" && exit 5
+	local PKG="$(readlink -v .gopath/self)"
+	echo "${PKG#src/}"
+}
+
+function guessself {
+	local PKG="$(git config --get remote.origin.url)"
+	PKG="${PKG#http://}"
+	PKG="${PKG#https://}"
+	echo "${PKG}"
+}
+
+function delegate {
+	# Export local gopath and gobin.
+	export GOBIN="$PWD/bin/"
+	export GOPATH="$PWD/.gopath"
+
+	# Set PWD to the self path to give other tools the most normal ideas possible.
+	cd "$GOPATH/src/$PKG/$DEEPER"
+
+	# Use ALL GO COMMANDS as NORMAL.  You now have a project-local scoped gopath!  NBD.
+	"$@"
+}
+
+if [[ "--help" == "${1:-}" ]]; then
+	usage
+elif [[ "--init" == "${1:-}" ]]; then
+	init "$2"
+elif [[ "--init-guess" == "${1:-}" ]]; then
+	init "$(guessself)"
+elif [[ "-" == "${1:-}" ]]; then
+	shift
+	sortie
+	PKG="$(readself)"
+	delegate "$@"
+else
+	sortie
+	PKG="$(readself)"
+	delegate go "$@"
+fi
