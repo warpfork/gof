@@ -3,6 +3,12 @@ gof
 
 **Go F**reely is a simple bash script to set up a project-local GOPATH environment.
 
+There have been many iterations of the "how do we make GOPATH not an impediment to sanity" wrapper scripts.  This is not the first, but it is the most recent, the most complete, and has been burning in without issues on my personal PATH for months now.  And unlike most previous shots at this, it has the venerable property of not requiring you add it to the project repo in order for it to work.
+
+If you have to work with Go... ┐(￣ー￣)┌
+gof.
+
+
 Usage
 -----
 
