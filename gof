@@ -26,7 +26,7 @@ function sortie {
 function readself {
 	[[ ! -d .gopath ]] && >&2 echo "gof: not initialized: no .gopath dir" && exit 4
 	[[ ! -h .gopath/self ]] && >&2 echo "gof: not initialized: no .gopath/self link" && exit 5
-	local PKG="$(readlink -v .gopath/self)"
+	local PKG="$(readlink .gopath/self)"
 	echo "${PKG#src/}"
 }
 
