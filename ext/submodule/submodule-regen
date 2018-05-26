@@ -1,0 +1,12 @@
+#!/bin/bash
+#
+# This script finds all paths that contain '.git' dirs and makes sure they're
+# properly added as git submodules.
+#
+# This is useful for running e.g. 'go get -d ./...', which will clone a bunch
+# of repos... then adding them as submodules.
+#
+
+find .gopath -name .git | xargs -L1 dirname \
+	| xargs -I{} bash -c '(cd "{}" && printf "%s\t%s\t%s\n" "{}" "$(git rev-parse HEAD)" "$(git config remote.origin.url)")'
+	| xargs -L1 bash -c 'git submodule add "$2" "$0"'

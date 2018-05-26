@@ -1,0 +1,14 @@
+#!/bin/bash
+#
+# This script walks all your submodules, fetches any changes, and checks out
+# the remote's master branch.
+#
+# This is useful for updating your dependencies in bulk (assuming that their
+# master branch is safe to upgrade to... but that's why you have tests and CI).
+# The changes aren't staged; you still have to 'git add the/updated/path'.
+# You can put the working tree back with another standard git command:
+# 'git submodule update the/updated/path' ('update' here means "to the version
+# that's committed").
+#
+
+git submodule foreach bash -c "echo ---- ; git fetch && git checkout --detach origin/master ; echo ----"
