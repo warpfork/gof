@@ -31,3 +31,6 @@ Git submodules compose effortlessly with the `gof` project-local GOPATH.
 
 Try using `gof get -d` and then just turning all the cloned repos into submodules;
 it's a pretty nice life.
+
+We have some helpful scripts in the `ext/submodules` directory if you're interested
+in learning more about and trying this approach.

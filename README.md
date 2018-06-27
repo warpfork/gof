@@ -75,6 +75,19 @@ In essense:
 ```
 
 
+Integration
+-----------
+
+If you have other tools which invoke `go`, and you want them to use `gof`, it's easy.
+
+The simplest thing to do is invoke via gof: `gof - thetool`.  This is an easy
+way to use e.g. `dep` or other tools.
+
+A more heavy-handed option for other tools that will invoke `go` is to actually
+map `go` *into* calling `gof`.  We have scripts in the `ext/gof-universal`
+directory which can help with this.  (This tactic is great for IDEs.)
+
+
 Fork it
 -------
 
