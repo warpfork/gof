@@ -8,6 +8,12 @@ There have been many iterations of the "how do we make GOPATH not an impediment 
 If you have to work with Go... ┐(￣ー￣)┌
 gof.
 
+_Is `gof` still relevant with the introduction of "go modules"?_
+
+Well, that's up to you to decide.  But, since `gof` works both before and after the introduction of `go mod`, and works the same way before and after, unobtrusively...
+_and_ still composes just fine with any versioning you want...?
+I'd say it might still be relevant, yeah.
+
 
 Usage
 -----
